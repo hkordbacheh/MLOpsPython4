@@ -22,7 +22,8 @@ variables:
 - group: devopsforai-aml-vg
 
 pool:
-  vmImage: ubuntu-latest
+  name: Default
+  # vmImage: ubuntu-latest
 
 stages:
 - stage: 'Model_CI'
