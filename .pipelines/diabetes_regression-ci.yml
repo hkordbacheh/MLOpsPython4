@@ -34,6 +34,22 @@ stages:
     # container: mlops
     timeoutInMinutes: 0
     steps:
+    - script: |
+        python -m venv .venv
+        source .venv/bin/activate
+        pip install --upgrade pip
+        pip install flake8 pytest
+      displayName: 'Setup virtual environment and Install Dependencies'
+
+    - script: |
+        source .venv/bin/activate
+        flake8 .
+      displayName: 'Run flake8'
+
+    - script: |
+        source .venv/bin/activate
+        pytest
+      displayName: 'Run pytest'
     - template: code-quality-template.yml
     - task: AzureCLI@1
       inputs:
