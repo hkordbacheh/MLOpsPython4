@@ -20,12 +20,9 @@ pool:
 
 variables:
   - group: devopsforai-aml-vg
-  - name: WORKSPACE_SKU # https://docs.microsoft.com/en-us/azure/machine-learning/overview-what-is-azure-ml#sku
-    value: basic
-  - group: devopsforai-aml-vg
   - name: ACI_NAME
     value: mlops-aci  # This should match the ACI name expected by the ARM template
-  - name: WORKSPACE_SKU
+  - name: WORKSPACE_SKU  # https://docs.microsoft.com/en-us/azure/machine-learning/overview-what-is-azure-ml#sku
     value: basic
 
 steps:
