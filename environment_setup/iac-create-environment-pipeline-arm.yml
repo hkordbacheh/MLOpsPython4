@@ -22,6 +22,11 @@ variables:
   - group: devopsforai-aml-vg
   - name: WORKSPACE_SKU # https://docs.microsoft.com/en-us/azure/machine-learning/overview-what-is-azure-ml#sku
     value: basic
+  - group: devopsforai-aml-vg
+  - name: ACI_NAME
+    value: mlops-aci  # This should match the ACI name expected by the ARM template
+  - name: WORKSPACE_SKU
+    value: basic
 
 steps:
   - task: AzureResourceGroupDeployment@2
@@ -32,6 +37,11 @@ steps:
       location: $(LOCATION)
       templateLocation: "Linked artifact"
       csmFile: "$(Build.SourcesDirectory)/environment_setup/arm-templates/cloud-environment.json"
-      overrideParameters: "-baseName $(BASE_NAME) -location $(LOCATION) -workspace $(WORKSPACE_NAME) -sku $(WORKSPACE_SKU)"
+      overrideParameters: >
+        -baseName $(BASE_NAME)
+        -location $(LOCATION)
+        -workspace $(WORKSPACE_NAME)
+        -sku $(WORKSPACE_SKU)
+        -aciName $(ACI_NAME)  
       deploymentMode: "Incremental"
     displayName: "Deploy MLOps resources to Azure"
