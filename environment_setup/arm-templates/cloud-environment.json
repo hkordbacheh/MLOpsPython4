@@ -1,5 +1,5 @@
 {
-  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
     "baseName": {
@@ -46,7 +46,13 @@
       "metadata": {
         "description": "Specifies the sku, also referred as 'edition' of the Azure Machine Learning workspace."
       }
-    }
+    },
+    "aciName": {
+      "type": "string",
+      "metadata": {
+    "description": "The name of the Azure Container Instance to create."
+  }
+}
   },
   "variables": {
     "amlWorkspaceName": "[parameters('workspace')]",
@@ -144,6 +150,30 @@
         "containerRegistry": "[resourceId('Microsoft.ContainerRegistry/registries',variables('containerRegistryName'))]",
         "storageAccount": "[resourceId('Microsoft.Storage/storageAccounts/',variables('storageAccountName'))]"
       }
-    }
+    },
+    {
+  "type": "Microsoft.ContainerInstance/containerGroups",
+  "apiVersion": "2021-03-01",
+  "name": "[parameters('aciName')]",
+  "location": "[parameters('location')]",
+  "properties": {
+    "containers": [
+      {
+        "name": "mlops-container",
+        "properties": {
+          "image": "mcr.microsoft.com/mlops/python:latest",
+          "resources": {
+            "requests": {
+              "cpu": 1,
+              "memoryInGb": 1.5
+            }
+          }
+        }
+      }
+    ],
+    "osType": "Linux"
+  },
+  "dependsOn": []
+}
   ]
 }
